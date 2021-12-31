@@ -27,7 +27,7 @@ public class Snake : MonoBehaviour
 
     public AudioSource eat;
 
-    Vector2 direction = Vector2.up;
+    Vector3 direction = Vector3.forward;
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +38,7 @@ public class Snake : MonoBehaviour
         moveSpeed = 3f;
         Score = 0;
         ScoreText.text = Score.ToString();
-        direction = Vector2.up;
+        direction = Vector3.forward;
 
         snakeMove = new SnakeMove();
         MoveAction = snakeMove.control.m_MoveAction;
@@ -60,13 +60,14 @@ public class Snake : MonoBehaviour
         _segments.Clear();
         _segments.Add(this.transform);
 
+        // Create Snake
         for (int i = 1; i < this.initSize; i++)
         {
             _segments_move.Add(Instantiate(this.segmentPrefab_move));
             _segments.Add(Instantiate(this.segmentPrefab));
 
-            _segments_move[i].position = new Vector3(i, 0.0f ,0f);
-            _segments[i].position = new Vector3(i, 0.0f ,0f);
+            _segments_move[i].position = new Vector3(i, 0.0f ,0.0f);
+            _segments[i].position = new Vector3(i, 0.0f ,0.0f);
             // _segments[i].gameObject.layer = _segments[i].gameObject.layer + 1;
         }
 
@@ -86,63 +87,63 @@ public class Snake : MonoBehaviour
         
         if(Vector3.Distance(transform.position, movePoint.position) <= 0.1f)
         {
-            if( m_move.y > m_move.x & m_move.y > -m_move.x & direction != Vector2.down)
+            if( m_move.y > m_move.x & m_move.y > -m_move.x & direction != Vector3.back)
             {
-                direction = Vector2.up;
+                direction = Vector3.forward;
             }
-            if( m_move.x > m_move.y & m_move.x > -m_move.y & direction != Vector2.left )
+            if( m_move.x > m_move.y & m_move.x > -m_move.y & direction != Vector3.left )
             {
-                direction = Vector2.right;
+                direction = Vector3.right;
             }
-            if( -m_move.y > m_move.x & -m_move.y > -m_move.x & direction != Vector2.up )
+            if( -m_move.y > m_move.x & -m_move.y > -m_move.x & direction != Vector3.forward )
             {
-                direction = Vector2.down;
+                direction = Vector3.back;
             }
-            if( -m_move.x > m_move.y & -m_move.x > -m_move.y & direction != Vector2.right )
+            if( -m_move.x > m_move.y & -m_move.x > -m_move.y & direction != Vector3.right )
             {
-                direction = Vector2.left;
+                direction = Vector3.left;
             }
 
-            if (direction == Vector2.left)
+            if (direction == Vector3.left)
             {
                 movePoint.position += Vector3.left;
             }
-            else if (direction == Vector2.right)
+            else if (direction == Vector3.right)
             {
                 movePoint.position += Vector3.right;
             }
-            if (direction == Vector2.down)
+            if (direction == Vector3.back)
             {
-                movePoint.position += Vector3.down;
+                movePoint.position += Vector3.back;
             }
-            else if (direction == Vector2.up)
+            else if (direction == Vector3.forward)
             {
-                movePoint.position += Vector3.up;
+                movePoint.position += Vector3.forward;
             }
             for (int i = _segments_move.Count - 1; i > 0; i--)
             {
-                _segments_move[i].position = new Vector3(Mathf.Round(_segments_move[i - 1].position.x), Mathf.Round(_segments_move[i - 1].position.y), 0.0f);
+                _segments_move[i].position = new Vector3(Mathf.Round(_segments_move[i - 1].position.x), 0.0f, Mathf.Round(_segments_move[i - 1].position.z));
                 _segments_move[0].rotation = transform.rotation;
                 _segments_move[i].rotation = _segments_move[i - 1].rotation;
             }
         }
 
         //collision with body
-        for( int i = 0; i <= _segments_move.Count -1; i++ )
+        for (int i = 0; i <= _segments_move.Count - 1; i++)
         {
-            if(Vector3.Distance(movePoint.position, _segments_move[i].position) == 0.0f)
+            if (Vector3.Distance(movePoint.position, _segments_move[i].position) == 0.0f)
             {
                 ResetGame();
             }
 
-            if(Vector3.Distance(Food.position, _segments_move[i].position) == 0.0f)
+            if (Vector3.Distance(Food.position, _segments_move[i].position) == 0.0f)
             {
                 RandomPos();
             }
         }
 
         //rotate to movedirection
-        Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, direction);
+        Quaternion toRotation = Quaternion.LookRotation(Vector3.up, direction);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
 
         for (int i = _segments.Count - 1; i > 0; i--)
@@ -167,21 +168,12 @@ public class Snake : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {   
+    {
         // Look To Fruite
 
-        //EyeL.forward = Food.position - EyeL.position;
-        //EyeR.forward = Food.position - EyeR.position;
-
-        EyeL.right = Food.position - EyeL.position;
-        EyeR.right = Food.position - EyeR.position;
-
-        float EyeLZ = EyeL.eulerAngles.z;
-        float EyeRZ = EyeR.eulerAngles.z;
-
-        EyeL.eulerAngles = new Vector3(0,0, EyeLZ);
-        EyeR.eulerAngles = new Vector3(0,0, EyeRZ);
-
+        // now handled with Look At Constraint
+        //EyeL.right = Food.position - EyeL.position;
+        //EyeR.right = Food.position - EyeR.position;
 
     }
 
@@ -217,10 +209,10 @@ public class Snake : MonoBehaviour
     {
         Bounds bounds = gridArea.bounds;
 
-        float x = Random.Range(bounds.min.x, bounds.max.x );
-        float y =  Random.Range(bounds.min.y, bounds.max.y );
+        float x = Random.Range( bounds.min.x, bounds.max.x );
+        float z =  Random.Range (bounds.min.z, bounds.max.z );
 
-        Food.position = new Vector3(Mathf.Round(x), Mathf.Round(y), 0.0f);
+        Food.position = new Vector3( Mathf.Round(x), 0.0f, Mathf.Round(z) );
     }
 
     private void Grow()
