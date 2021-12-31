@@ -27,7 +27,7 @@ public class Snake : MonoBehaviour
 
     public AudioSource eat;
 
-    Vector3 direction = Vector3.forward;
+    Vector3 direction, lookDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -85,25 +85,25 @@ public class Snake : MonoBehaviour
         //movement
         Vector2 m_move = MoveAction.ReadValue<Vector2>();
         
+        if( m_move.y > m_move.x & m_move.y > -m_move.x & direction != Vector3.back)
+        {
+            direction = Vector3.forward;
+        }
+        if( m_move.x > m_move.y & m_move.x > -m_move.y & direction != Vector3.left )
+        {
+            direction = Vector3.right;
+        }
+        if( -m_move.y > m_move.x & -m_move.y > -m_move.x & direction != Vector3.forward )
+        {
+            direction = Vector3.back;
+        }
+        if( -m_move.x > m_move.y & -m_move.x > -m_move.y & direction != Vector3.right )
+        {
+            direction = Vector3.left;
+        }
+
         if(Vector3.Distance(transform.position, movePoint.position) <= 0.1f)
         {
-            if( m_move.y > m_move.x & m_move.y > -m_move.x & direction != Vector3.back)
-            {
-                direction = Vector3.forward;
-            }
-            if( m_move.x > m_move.y & m_move.x > -m_move.y & direction != Vector3.left )
-            {
-                direction = Vector3.right;
-            }
-            if( -m_move.y > m_move.x & -m_move.y > -m_move.x & direction != Vector3.forward )
-            {
-                direction = Vector3.back;
-            }
-            if( -m_move.x > m_move.y & -m_move.x > -m_move.y & direction != Vector3.right )
-            {
-                direction = Vector3.left;
-            }
-
             if (direction == Vector3.left)
             {
                 movePoint.position += Vector3.left;
@@ -126,6 +126,8 @@ public class Snake : MonoBehaviour
                 _segments_move[0].rotation = transform.rotation;
                 _segments_move[i].rotation = _segments_move[i - 1].rotation;
             }
+
+            lookDirection = direction;
         }
 
         //collision with body
@@ -143,7 +145,7 @@ public class Snake : MonoBehaviour
         }
 
         //rotate to movedirection
-        Quaternion toRotation = Quaternion.LookRotation(Vector3.up, direction);
+        Quaternion toRotation = Quaternion.LookRotation(Vector3.up, lookDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
 
         for (int i = _segments.Count - 1; i > 0; i--)
@@ -241,6 +243,7 @@ public class Snake : MonoBehaviour
 
         eat.Play();
 
+        Debug.Log(moveSpeed);
     }
 
     private void ResetGame()

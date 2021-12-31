@@ -7,6 +7,6 @@ public class settings : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = _targetFrameRate;
-        Debug.Log("Hello World");
+        //Debug.Log("Hello World");
     }
 }

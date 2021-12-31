@@ -581,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 5083732655309138208, guid: 0331d0766f201ce4c9d259edf2b0c4dc,
     type: 3}
-  segmentPrefab_move: {fileID: 5038920670230452214, guid: 9dba0cae9e46cf5498eb083ab7581aba,
+  segmentPrefab_move: {fileID: 3851007785747516, guid: 43af5a7cbc87f7f4f9c3b507dca2b756,
     type: 3}
   movePoint: {fileID: 1942967232}
   Food: {fileID: 6394405323853560203}
