@@ -27,7 +27,7 @@ public class Snake : MonoBehaviour
 
     public AudioSource eat;
 
-    Vector3 direction, lookDirection;
+    Vector3 direction, MoveDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +39,7 @@ public class Snake : MonoBehaviour
         Score = 0;
         ScoreText.text = Score.ToString();
         direction = Vector3.forward;
+        MoveDirection = direction;
 
         snakeMove = new SnakeMove();
         MoveAction = snakeMove.control.m_MoveAction;
@@ -77,6 +78,17 @@ public class Snake : MonoBehaviour
         RandomPos();
     }
 
+    private void FixedUpdate()
+    {
+        // Look To Fruite
+
+        // now handled with Look At Constraint
+        //EyeL.right = Food.position - EyeL.position;
+        //EyeR.right = Food.position - EyeR.position;
+
+
+    }
+
     void Update()
     {   
         //align segments
@@ -84,50 +96,58 @@ public class Snake : MonoBehaviour
         
         //movement
         Vector2 m_move = MoveAction.ReadValue<Vector2>();
-        
-        if( m_move.y > m_move.x & m_move.y > -m_move.x & direction != Vector3.back)
+
+        Debug.Log(m_move);
+
+        if ( m_move.y > m_move.x & m_move.y > -m_move.x)
         {
             direction = Vector3.forward;
         }
-        if( m_move.x > m_move.y & m_move.x > -m_move.y & direction != Vector3.left )
+        if( m_move.x > m_move.y & m_move.x > -m_move.y)
         {
             direction = Vector3.right;
         }
-        if( -m_move.y > m_move.x & -m_move.y > -m_move.x & direction != Vector3.forward )
+        if( -m_move.y > m_move.x & -m_move.y > -m_move.x)
         {
             direction = Vector3.back;
         }
-        if( -m_move.x > m_move.y & -m_move.x > -m_move.y & direction != Vector3.right )
+        if( -m_move.x > m_move.y & -m_move.x > -m_move.y )
         {
             direction = Vector3.left;
         }
 
+
         if(Vector3.Distance(transform.position, movePoint.position) <= 0.1f)
         {
-            if (direction == Vector3.left)
+
+            // change move direction of the move point
+            if (MoveDirection == Vector3.left & direction != Vector3.right)
             {
-                movePoint.position += Vector3.left;
+                MoveDirection = direction;
             }
-            else if (direction == Vector3.right)
+            if (MoveDirection == Vector3.right & direction != Vector3.left)
             {
-                movePoint.position += Vector3.right;
+                MoveDirection = direction;
             }
-            if (direction == Vector3.back)
+            if (MoveDirection == Vector3.forward & direction != Vector3.back)
             {
-                movePoint.position += Vector3.back;
+                MoveDirection = direction;
             }
-            else if (direction == Vector3.forward)
+            if (MoveDirection == Vector3.back & direction != Vector3.forward)
             {
-                movePoint.position += Vector3.forward;
+                MoveDirection = direction;
             }
+
+            // move the move point
+            movePoint.position += MoveDirection;
+
+            //place and rotate dummy segments to the segment in front
             for (int i = _segments_move.Count - 1; i > 0; i--)
             {
                 _segments_move[i].position = new Vector3(Mathf.Round(_segments_move[i - 1].position.x), 0.0f, Mathf.Round(_segments_move[i - 1].position.z));
                 _segments_move[0].rotation = transform.rotation;
                 _segments_move[i].rotation = _segments_move[i - 1].rotation;
             }
-
-            lookDirection = direction;
         }
 
         //collision with body
@@ -145,7 +165,7 @@ public class Snake : MonoBehaviour
         }
 
         //rotate to movedirection
-        Quaternion toRotation = Quaternion.LookRotation(Vector3.up, lookDirection);
+        Quaternion toRotation = Quaternion.LookRotation(Vector3.up, MoveDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotateSpeed * Time.deltaTime);
 
         for (int i = _segments.Count - 1; i > 0; i--)
@@ -169,15 +189,7 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        // Look To Fruite
 
-        // now handled with Look At Constraint
-        //EyeL.right = Food.position - EyeL.position;
-        //EyeR.right = Food.position - EyeR.position;
-
-    }
 
     public static void WriteScore(int HiScore_)
     {
@@ -243,7 +255,7 @@ public class Snake : MonoBehaviour
 
         eat.Play();
 
-        Debug.Log(moveSpeed);
+        //Debug.Log(moveSpeed);
     }
 
     private void ResetGame()
