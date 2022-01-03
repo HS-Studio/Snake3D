@@ -1,12 +1,47 @@
+using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class settings : MonoBehaviour
 {
-    [SerializeField]
-    int _targetFrameRate = 30;
+    public static int _targetFrameRate, control_type;
+    private static string settings_path;
+
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        Application.targetFrameRate = _targetFrameRate;
+        settings_path = Application.persistentDataPath + "/settings.sav";
+
+        //DontDestroyOnLoad(gameObject);
+
+        if (_targetFrameRate == 0)
+        {
+            Application.targetFrameRate = 30;
+        }
+        else
+        {
+            Application.targetFrameRate = _targetFrameRate;
+        }
         //Debug.Log("Hello World");
+        loadSettings();
+    }
+
+    public static void loadSettings()
+    {
+        if (File.Exists(settings_path))
+        {
+            SaveData data = SaveLoad.Load(settings_path);
+            control_type = data.control_type;
+        }
+        //_targetFrameRate = data._targetFrameRate;
+    }
+
+    public void saveSettings()
+    {
+        SaveLoad.Save(this, settings_path);
+    }
+
+    public void ChangeControl(int val)
+    {
+        control_type = val;
     }
 }

@@ -97,7 +97,7 @@ public class Snake : MonoBehaviour
         //movement
         Vector2 m_move = MoveAction.ReadValue<Vector2>();
 
-        Debug.Log(m_move);
+        //Debug.Log(m_move);
 
         if ( m_move.y > m_move.x & m_move.y > -m_move.x)
         {
@@ -189,24 +189,25 @@ public class Snake : MonoBehaviour
         }
     }
 
-
-
-    public static void WriteScore(int HiScore_)
+    public void WriteScore(int HiScore_)
     {
-        string path = Application.persistentDataPath + "/Score.txt";
-        File.WriteAllText(path, HiScore_.ToString());
+        string ScorePath = Application.persistentDataPath + "/Score.sav";
+        //File.WriteAllText(path, HiScore_.ToString());
+        SaveLoad.Save(this, ScorePath);
     }
 
     public int ReadScore()
     {
-        string path = Application.persistentDataPath + "/Score.txt";
-        string s_score = "";
+        string OldPath = Application.persistentDataPath + "/Score.txt";
+
+        string ScorePath = Application.persistentDataPath + "/Score.sav";
+
         int HiScore_ ;
-        //Read the text directly from the Score.txt file
-        if(File.Exists(path))
+
+        if(File.Exists(ScorePath))
         {
-            s_score = File.ReadAllText(path);
-            HiScore_ = int.Parse(s_score);
+            SaveData data = SaveLoad.Load(ScorePath);
+            HiScore_ = data.HiScore;
         }
         else
         {
@@ -215,7 +216,6 @@ public class Snake : MonoBehaviour
 
         return HiScore_;
         //Debug.Log(s_score);
-        
     }
 
     //friut position

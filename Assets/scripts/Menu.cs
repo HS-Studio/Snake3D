@@ -21,14 +21,23 @@ public class Menu : MonoBehaviour
     
     void Start()
     {
-        string path = Application.persistentDataPath + "/Score.txt";
-        if(File.Exists(path))
+        string OldPath = Application.persistentDataPath + "/Score.txt";
+        string ScorePath = Application.persistentDataPath + "/Score.sav";
+
+        if (File.Exists(OldPath))
         {
-            s_HiScore = File.ReadAllText(path);
+            s_HiScore = File.ReadAllText(OldPath);
+            HiScoreText.text = s_HiScore;
+            File.Delete(OldPath);
+        }
+        else if (File.Exists(ScorePath))
+        {
+            SaveData data = SaveLoad.Load(ScorePath);
+            s_HiScore = data.HiScore.ToString();
             HiScoreText.text = s_HiScore;
         }
     }
-    
+
     // Update is called once per frame
     /*
     void Update()
