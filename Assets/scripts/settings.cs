@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class settings : MonoBehaviour
 {
     public static int _targetFrameRate, control_type;
+    public static float notch_height;
     private static string settings_path;
 
     void Awake()
@@ -31,6 +32,7 @@ public class settings : MonoBehaviour
         {
             SaveData data = SaveLoad.Load(settings_path);
             control_type = data.control_type;
+            notch_height = data.notch_height;
         }
         //_targetFrameRate = data._targetFrameRate;
     }

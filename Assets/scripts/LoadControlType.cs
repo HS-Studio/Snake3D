@@ -11,7 +11,7 @@ public class LoadControlType : settings
     {
         loadSettings();
 
-        Debug.Log(control_type);
+        //Debug.Log(control_type);
 
         if (control_type == 0)
         {

@@ -9,8 +9,8 @@ using System.IO;
 public class Menu : MonoBehaviour
 {
     //public int HiScore;
-    public Text HiScoreText;
-    string s_HiScore;
+    [SerializeField] private Text HiScoreText, ScoreText;
+     private string s_HiScore;
     
     public void clicked()
     {
@@ -23,6 +23,8 @@ public class Menu : MonoBehaviour
     {
         string OldPath = Application.persistentDataPath + "/Score.txt";
         string ScorePath = Application.persistentDataPath + "/Score.sav";
+
+        ScoreText.text = Snake.Score.ToString();
 
         if (File.Exists(OldPath))
         {
@@ -37,12 +39,4 @@ public class Menu : MonoBehaviour
             HiScoreText.text = s_HiScore;
         }
     }
-
-    // Update is called once per frame
-    /*
-    void Update()
-    {
-        
-    }
-    */
 }
