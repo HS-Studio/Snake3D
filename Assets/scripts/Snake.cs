@@ -226,7 +226,21 @@ public class Snake : MonoBehaviour
         float x = Random.Range( bounds.min.x, bounds.max.x );
         float z =  Random.Range (bounds.min.z, bounds.max.z );
 
-        Food.position = new Vector3( Mathf.Round(x), 0.0f, Mathf.Round(z) );
+        Vector3 NewPosition = new Vector3(Mathf.Round(x), 0.0f, Mathf.Round(z));
+
+        for (int i = 0; i <= _segments_move.Count - 1; i++)
+        {
+            if (NewPosition != _segments_move[i].position)
+            {
+                Food.position = NewPosition;
+            }
+            else
+            {
+                RandomPos();
+            }
+        }
+
+        //Food.position = new Vector3( Mathf.Round(x), 0.0f, Mathf.Round(z) );
     }
 
     private void Grow()
