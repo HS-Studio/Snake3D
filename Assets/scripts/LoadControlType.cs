@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class LoadControlType : settings
 {
-    [SerializeField]
-    public GameObject Dpad, Joy;
+    [SerializeField] public GameObject Dpad, Joy;
+
     private void Start()
     {
         loadSettings();

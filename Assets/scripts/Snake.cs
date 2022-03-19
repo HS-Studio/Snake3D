@@ -228,15 +228,17 @@ public class Snake : MonoBehaviour
 
         Vector3 NewPosition = new Vector3(Mathf.Round(x), 0.0f, Mathf.Round(z));
 
+        Debug.Log(NewPosition);
+
         for (int i = 0; i <= _segments_move.Count - 1; i++)
         {
-            if (NewPosition != _segments_move[i].position)
+            if (NewPosition == _segments_move[i].position)
             {
-                Food.position = NewPosition;
+                RandomPos();
             }
             else
             {
-                RandomPos();
+                Food.position = NewPosition;
             }
         }
 
