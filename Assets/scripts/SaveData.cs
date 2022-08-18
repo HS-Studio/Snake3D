@@ -6,7 +6,7 @@ using UnityEngine;
 public class SaveData
 {
     public int HiScore, _targetFrameRate, control_type;
-    public float notch_height;
+    public float notch_height, cam_angle;
 
     public SaveData (Snake saveData)
     {
@@ -17,5 +17,6 @@ public class SaveData
         _targetFrameRate = settings._targetFrameRate;
         control_type = settings.control_type;
         notch_height = settings.notch_height;
+        cam_angle = settings.cam_angle;
     }
 }

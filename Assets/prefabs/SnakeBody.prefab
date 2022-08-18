@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5083732655309138208}
   - component: {fileID: 5161849488276189293}
   - component: {fileID: 7117763611976191258}
+  - component: {fileID: 3911817127670792692}
   m_Layer: 0
   m_Name: SnakeBody
   m_TagString: Untagged
@@ -61,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9228768e339eb5e4483d8d12f0bccab0, type: 2}
+  - {fileID: 2100000, guid: 896ee83a994e4744bbdb2192be11e268, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &3911817127670792692
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4699886782115999795}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.33000016
+  m_Center: {x: -0.000000014901168, y: 3.552714e-15, z: -0.000000014901165}

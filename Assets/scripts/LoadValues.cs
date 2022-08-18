@@ -4,12 +4,14 @@ using UnityEngine.UI;
 
 public class LoadValues : settings
 {
-    [SerializeField] private Dropdown dropdown;
+    //[SerializeField] private Dropdown dropdown;
     [SerializeField] private Toggle toggle_0, toggle_1;
-    [SerializeField] private Slider slider;
+    [SerializeField] private Slider notch_slider, cam_slider;
     
-    void Start()
+    void OnEnable()
     {
+        loadSettings();
+
         if (control_type == 0)
         {
             toggle_0.isOn = true;
@@ -20,7 +22,8 @@ public class LoadValues : settings
             //toggle_0.isOn = false;
             toggle_1.isOn = true;
         }
-        dropdown.value = control_type;
-        slider.value = notch_height;
+        notch_slider.value = notch_height;
+        cam_slider.value = cam_angle;
+        Debug.Log("Pause");
     }
 }

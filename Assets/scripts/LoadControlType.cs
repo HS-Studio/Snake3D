@@ -9,19 +9,30 @@ public class LoadControlType : settings
 
     private void Start()
     {
+        LoadControls();
+    }
+    private void OnEnable()
+    {
+        LoadControls();
+    }
+    public void LoadControls()
+    {
         loadSettings();
 
         //Debug.Log(control_type);
-
-        if (control_type == 0)
+        
+        if(Dpad || Joy != null)
         {
-            Dpad.SetActive(true);
-            Joy.SetActive(false);
-        }
-        if (control_type == 1)
-        {
-            Dpad.SetActive(false);
-            Joy.SetActive(true);
+            if (control_type == 0)
+            {
+                Dpad.SetActive(true);
+                Joy.SetActive(false);
+            }
+            if (control_type == 1)
+            {
+                Dpad.SetActive(false);
+                Joy.SetActive(true);
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,20 +11,21 @@ public class PauseMenu : MonoBehaviour
     private SnakeMove _quit;
     private InputAction Quit;
 
-    [SerializeField]
-    GameObject PauseManu;
-    // Start is called before the first frame update
+    [SerializeField] GameObject _pauseMenu;
+    [SerializeField] Image playPause;
+    [SerializeField] Sprite spr_play, spr_pause;
+    
     void Start()
     {
         isPaused = false;
-        PauseManu.SetActive(false);
+        _pauseMenu.SetActive(false);
     }
 
     private void OnEnable()
     {
         _quit = new SnakeMove();
         Quit = _quit.control.Pause;
-        Quit.performed += Quitction;
+        Quit.performed += Quitaction;
 
         Quit.Enable();
     }
@@ -34,7 +35,7 @@ public class PauseMenu : MonoBehaviour
         Quit.Disable();
     }
 
-    public void Quitction(InputAction.CallbackContext context)
+    public void Quitaction(InputAction.CallbackContext context)
     {
         PauseResume();
     }
@@ -43,14 +44,22 @@ public class PauseMenu : MonoBehaviour
     {
         if(isPaused)
         {
+            if (playPause != null)
+            {
+                playPause.sprite = spr_pause;
+            }
             isPaused = false;
-            PauseManu.SetActive(false);
+            _pauseMenu.SetActive(false);
             Time.timeScale = 1;
         }
         else
         {
+            if (playPause != null)
+            {
+                playPause.sprite = spr_play;
+            }
             isPaused = true;
-            PauseManu.SetActive(true);
+            _pauseMenu.SetActive(true);
             Time.timeScale = 0;
         }
     }

@@ -77,18 +77,6 @@ public class Snake : MonoBehaviour
 
         RandomPos();
     }
-
-    private void FixedUpdate()
-    {
-        // Look To Fruite
-
-        // now handled with Look At Constraint
-        //EyeL.right = Food.position - EyeL.position;
-        //EyeR.right = Food.position - EyeR.position;
-
-
-    }
-
     void Update()
     {   
         //align segments

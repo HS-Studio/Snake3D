@@ -1,18 +1,17 @@
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class settings : MonoBehaviour
 {
     public static int _targetFrameRate, control_type;
-    public static float notch_height;
+    public static float notch_height, cam_angle;
     private static string settings_path;
 
-    void Awake()
+    private void Start()
     {
         settings_path = Application.persistentDataPath + "/settings.sav";
 
-        //DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(this);
 
         if (_targetFrameRate == 0)
         {
@@ -22,7 +21,7 @@ public class settings : MonoBehaviour
         {
             Application.targetFrameRate = _targetFrameRate;
         }
-        //Debug.Log("Hello World");
+        
         loadSettings();
     }
 
@@ -33,17 +32,24 @@ public class settings : MonoBehaviour
             SaveData data = SaveLoad.Load(settings_path);
             control_type = data.control_type;
             notch_height = data.notch_height;
+            cam_angle = data.cam_angle;
         }
+        Debug.Log("Settings loaded");
+        Debug.Log(control_type);
         //_targetFrameRate = data._targetFrameRate;
     }
 
     public void saveSettings()
     {
         SaveLoad.Save(this, settings_path);
+        Debug.Log("Settings saved");
+        Debug.Log(control_type);
     }
 
     public void ChangeControl(int val)
     {
         control_type = val;
+        saveSettings();
+        loadSettings();
     }
 }
